@@ -4,9 +4,11 @@ import { Router } from '@angular/router';
 import { tap } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 
+import { environment } from '../../environments/environment';
+
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private apiUrl = 'http://localhost:5000/api/auth';
+  private apiUrl = environment.apiUrl + '/auth';
   
   isAuthenticated = signal(false);
   currentUser = signal<any>(null);
