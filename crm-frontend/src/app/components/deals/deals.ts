@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService, Deal, Customer, User } from '../../services/api.service';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-deals',
@@ -256,7 +257,7 @@ import { HttpClient } from '@angular/common/http';
                             <p class="text-xs text-gray-500">{{(file.fileSize / 1024).toFixed(1)}} KB</p>
                           </div>
                         </div>
-                        <a [href]="'http://localhost:5000/api/files/' + file.id" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-900">Download</a>
+                        <a [href]="env.apiUrl + '/files/' + file.id" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-900">Download</a>
                       </div>
                       <div *ngIf="!files().length" class="text-sm text-gray-500">No files attached.</div>
                     </div>
@@ -273,6 +274,7 @@ import { HttpClient } from '@angular/common/http';
   `
 })
 export class DealsComponent implements OnInit {
+  env = environment;
   deals = signal<Deal[]>([]);
   customers = signal<Customer[]>([]);
   users = signal<User[]>([]);
@@ -315,7 +317,7 @@ export class DealsComponent implements OnInit {
   }
 
   exportCSV() {
-    this.http.get('http://localhost:5000/api/export/deals', { responseType: 'blob' })
+    this.http.get(`${environment.apiUrl}/export/deals`, { responseType: 'blob' })
       .subscribe(blob => {
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -337,7 +339,7 @@ export class DealsComponent implements OnInit {
   }
 
   loadFiles(dealId: number) {
-    this.http.get<any[]>(`http://localhost:5000/api/files/Deal/${dealId}`).subscribe(f => {
+    this.http.get<any[]>(`${environment.apiUrl}/files/Deal/${dealId}`).subscribe(f => {
       this.files.set(f);
     });
   }
@@ -355,7 +357,7 @@ export class DealsComponent implements OnInit {
       formData.append('entityType', 'Deal');
       formData.append('entityId', dealId.toString());
 
-      this.http.post('http://localhost:5000/api/files/upload', formData).subscribe(() => {
+      this.http.post(`${environment.apiUrl}/files/upload`, formData).subscribe(() => {
         this.loadFiles(dealId);
       });
     }
@@ -368,7 +370,7 @@ export class DealsComponent implements OnInit {
     this.isGeneratingEmail = true;
     this.emailDraft = '';
 
-    this.http.post<any>('http://localhost:5000/api/email/generate-draft', { dealId }).subscribe({
+    this.http.post<any>(`${environment.apiUrl}/email/generate-draft`, { dealId }).subscribe({
       next: (res) => {
         this.emailDraft = res.draft;
         this.isGeneratingEmail = false;

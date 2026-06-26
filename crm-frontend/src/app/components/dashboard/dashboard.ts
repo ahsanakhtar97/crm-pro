@@ -5,6 +5,7 @@ import { Chart, registerables } from 'chart.js';
 
 Chart.register(...registerables);
 import { ThreeGlobeComponent } from '../shared/three-globe';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-dashboard',
@@ -247,23 +248,23 @@ export class DashboardComponent implements OnInit {
     Chart.defaults.borderColor = 'rgba(255, 255, 255, 0.1)';
 
     // 1. Get standard dashboard data
-    this.http.get<any>('http://localhost:5000/api/reports/dashboard').subscribe({
+    this.http.get<any>(`${environment.apiUrl}/reports/dashboard`).subscribe({
       next: d => this.data.set(d),
       error: err => this.error.set(`Cannot connect to API (${err.status || err.message}).`)
     });
 
     // 2. Get Forecast
-    this.http.get<any>('http://localhost:5000/api/dashboard/forecast').subscribe({
+    this.http.get<any>(`${environment.apiUrl}/dashboard/forecast`).subscribe({
       next: d => this.forecast.set(d)
     });
 
     // 3. Get Revenue Chart Data
-    this.http.get<any[]>('http://localhost:5000/api/dashboard/revenue-chart').subscribe({
+    this.http.get<any[]>(`${environment.apiUrl}/dashboard/revenue-chart`).subscribe({
       next: d => this.renderRevenueChart(d)
     });
 
     // 4. Get Win/Loss Chart Data
-    this.http.get<any[]>('http://localhost:5000/api/dashboard/win-loss').subscribe({
+    this.http.get<any[]>(`${environment.apiUrl}/dashboard/win-loss`).subscribe({
       next: d => this.renderWinLossChart(d)
     });
   }

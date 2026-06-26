@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from './services/auth.service';
 import { ThreeEnvironmentComponent } from './components/shared/three-environment';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -36,7 +37,7 @@ export class AppComponent implements OnInit {
   }
 
   loadNotifications() {
-    this.http.get<any[]>('http://localhost:5000/api/notifications').subscribe(n => {
+    this.http.get<any[]>(`${environment.apiUrl}/notifications`).subscribe(n => {
       this.notifications = n;
     });
   }
@@ -53,7 +54,7 @@ export class AppComponent implements OnInit {
     }
 
     this.searchTimeout = setTimeout(() => {
-      this.http.get(`http://localhost:5000/api/search?q=${this.searchQuery}`)
+      this.http.get(`${environment.apiUrl}/search?q=${this.searchQuery}`)
         .subscribe(res => {
           this.searchResults = res;
         });

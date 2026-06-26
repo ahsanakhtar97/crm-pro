@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService, Customer } from '../../services/api.service';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-customers',
@@ -281,7 +282,7 @@ export class CustomersComponent implements OnInit {
   }
 
   exportCSV() {
-    this.http.get('http://localhost:5000/api/export/customers', { responseType: 'blob' })
+    this.http.get(`${environment.apiUrl}/export/customers`, { responseType: 'blob' })
       .subscribe(blob => {
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -302,7 +303,7 @@ export class CustomersComponent implements OnInit {
   }
 
   loadActivities(customerId: number) {
-    this.http.get<any[]>(`http://localhost:5000/api/customers/${customerId}/activities`).subscribe(a => {
+    this.http.get<any[]>(`${environment.apiUrl}/customers/${customerId}/activities`).subscribe(a => {
       this.activities.set(a);
     });
   }
@@ -317,7 +318,7 @@ export class CustomersComponent implements OnInit {
     const customerId = this.selectedCustomer()?.id;
     if (!customerId) return;
 
-    this.http.post(`http://localhost:5000/api/customers/${customerId}/activities`, {
+    this.http.post(`${environment.apiUrl}/customers/${customerId}/activities`, {
       type: 'Note',
       content: this.newNoteText
     }).subscribe(() => {
