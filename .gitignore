@@ -1,0 +1,13 @@
+# .NET
+bin/
+obj/
+*.db
+*.db-shm
+*.db-wal
+
+# Angular
+crm-frontend/node_modules/
+crm-frontend/dist/
+
+# Secrets — DO NOT commit your API key
+# appsettings.json is included but make sure to clear the key before pushing
