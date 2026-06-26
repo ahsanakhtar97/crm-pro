@@ -1,11 +1,14 @@
 using CRM.API.Data;
 using CRM.API.DTOs;
 using CRM.API.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace CRM.API.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class CustomersController : ControllerBase
@@ -48,7 +51,8 @@ public class CustomersController : ControllerBase
             Phone = dto.Phone,
             Company = dto.Company,
             Status = dto.Status,
-            Notes = dto.Notes
+            Notes = dto.Notes,
+            UserId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty
         };
         _db.Customers.Add(customer);
         await _db.SaveChangesAsync();

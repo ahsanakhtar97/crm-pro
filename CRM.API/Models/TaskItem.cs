@@ -13,4 +13,7 @@ public class TaskItem
 
     public int? CustomerId { get; set; }
     public Customer? Customer { get; set; }
+
+    public string UserId { get; set; } = string.Empty;
+    public ApplicationUser User { get; set; } = null!;
 }

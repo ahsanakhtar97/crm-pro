@@ -2,6 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+export interface User {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+}
+
 export interface Customer {
   id: number;
   firstName: string;
@@ -24,6 +31,7 @@ export interface Deal {
   notes?: string;
   customerId: number;
   customerName?: string;
+  userId?: string;
   createdAt: string;
 }
 
@@ -36,6 +44,7 @@ export interface TaskItem {
   dueDate?: string;
   customerId?: number;
   customerName?: string;
+  userId?: string;
   createdAt: string;
 }
 
@@ -58,6 +67,11 @@ const API = 'http://localhost:5000/api';
 @Injectable({ providedIn: 'root' })
 export class ApiService {
   constructor(private http: HttpClient) {}
+
+  // Users
+  getUsers(): Observable<User[]> {
+    return this.http.get<User[]>(`${API}/users`);
+  }
 
   // Customers
   getCustomers(search?: string, status?: string): Observable<Customer[]> {

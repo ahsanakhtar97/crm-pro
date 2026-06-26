@@ -13,6 +13,9 @@ public class Customer
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
+    public string UserId { get; set; } = string.Empty;
+    public ApplicationUser User { get; set; } = null!;
+
     public ICollection<Deal> Deals { get; set; } = new List<Deal>();
     public ICollection<TaskItem> Tasks { get; set; } = new List<TaskItem>();
 }

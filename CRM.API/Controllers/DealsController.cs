@@ -1,11 +1,14 @@
 using CRM.API.Data;
 using CRM.API.DTOs;
 using CRM.API.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace CRM.API.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class DealsController : ControllerBase
@@ -47,7 +50,8 @@ public class DealsController : ControllerBase
             Probability = dto.Probability,
             ExpectedCloseDate = dto.ExpectedCloseDate,
             Notes = dto.Notes,
-            CustomerId = dto.CustomerId
+            CustomerId = dto.CustomerId,
+            UserId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty
         };
         _db.Deals.Add(deal);
         await _db.SaveChangesAsync();

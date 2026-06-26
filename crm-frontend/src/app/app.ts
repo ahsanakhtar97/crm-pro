@@ -1,29 +1,62 @@
-import { Component } from '@angular/core';
-import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterOutlet, RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { AuthService } from './services/auth.service';
+import { ThreeEnvironmentComponent } from './components/shared/three-environment';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive],
-  template: `
-    <div class="app-layout">
-      <nav class="sidebar">
-        <div class="sidebar-brand">
-          <span class="brand-icon">⚡</span>
-          <span class="brand-name">CRM Pro</span>
-        </div>
-        <ul class="nav-links">
-          <li><a routerLink="/dashboard" routerLinkActive="active">📊 Dashboard</a></li>
-          <li><a routerLink="/customers" routerLinkActive="active">👥 Customers</a></li>
-          <li><a routerLink="/deals" routerLinkActive="active">💼 Deals</a></li>
-          <li><a routerLink="/tasks" routerLinkActive="active">✅ Tasks</a></li>
-          <li><a routerLink="/ai" routerLinkActive="active">🤖 AI Assistant</a></li>
-        </ul>
-      </nav>
-      <main class="main-content">
-        <router-outlet />
-      </main>
-    </div>
-  `
+  imports: [CommonModule, RouterOutlet, RouterModule, FormsModule, ThreeEnvironmentComponent],
+  templateUrl: './app.html',
+  styleUrls: ['./app.scss']
 })
-export class App {}
+export class AppComponent implements OnInit {
+  authService = inject(AuthService);
+  http = inject(HttpClient);
+
+  searchQuery = '';
+  searchResults: any = null;
+  searchTimeout: any;
+
+  notifications: any[] = [];
+  showNotifications = false;
+
+  ngOnInit() {
+    if (this.authService.isAuthenticated()) {
+      this.loadNotifications();
+      setInterval(() => {
+        if (this.authService.isAuthenticated()) {
+          this.loadNotifications();
+        }
+      }, 30000);
+    }
+  }
+
+  loadNotifications() {
+    this.http.get<any[]>('http://localhost:5000/api/notifications').subscribe(n => {
+      this.notifications = n;
+    });
+  }
+
+  logout() {
+    this.authService.logout();
+  }
+
+  onSearch() {
+    clearTimeout(this.searchTimeout);
+    if (!this.searchQuery.trim()) {
+      this.searchResults = null;
+      return;
+    }
+
+    this.searchTimeout = setTimeout(() => {
+      this.http.get(`http://localhost:5000/api/search?q=${this.searchQuery}`)
+        .subscribe(res => {
+          this.searchResults = res;
+        });
+    }, 300);
+  }
+}
