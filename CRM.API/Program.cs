@@ -8,15 +8,19 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL") 
+                       ?? builder.Configuration.GetConnectionString("DefaultConnection") 
+                       ?? "Host=localhost;Database=crm;Username=postgres;Password=postgres";
+
 builder.Services.AddDbContext<CrmDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection") ?? "Data Source=crm.db"));
+    options.UseNpgsql(connectionString));
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<CrmDbContext>()
     .AddDefaultTokenProviders();
 
 var jwtSettings = builder.Configuration.GetSection("Jwt");
-var secretKey = jwtSettings["Key"] ?? "ThisIsASecretKeyForJwtAuthenticationInThisApp";
+var secretKey = Environment.GetEnvironmentVariable("JWT_KEY") ?? jwtSettings["Key"] ?? "ThisIsASecretKeyForJwtAuthenticationInThisApp";
 
 builder.Services.AddAuthentication(options =>
 {

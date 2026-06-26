@@ -4,6 +4,7 @@ using CRM.API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -15,34 +16,40 @@ namespace CRM.API.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "8.0.11");
+            modelBuilder
+                .HasAnnotation("ProductVersion", "8.0.11")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("CRM.API.Models.ActivityNote", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int?>("CustomerId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
 
                     b.Property<int?>("DealId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -58,65 +65,65 @@ namespace CRM.API.Migrations
             modelBuilder.Entity("CRM.API.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<int>("AccessFailedCount")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("boolean");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("PasswordHash")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("SecurityStamp")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("character varying(256)");
 
                     b.HasKey("Id");
 
@@ -134,8 +141,8 @@ namespace CRM.API.Migrations
                         {
                             Id = "b74ddd14-6340-4840-95c2-db12554843e5",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "97e7b72a-651d-49fe-a7e6-0cccd75f817e",
-                            CreatedAt = new DateTime(2026, 6, 26, 10, 54, 47, 245, DateTimeKind.Utc).AddTicks(6666),
+                            ConcurrencyStamp = "47d23563-2f95-48ef-94f4-e74e2056f079",
+                            CreatedAt = new DateTime(2026, 6, 26, 16, 7, 38, 653, DateTimeKind.Utc).AddTicks(7211),
                             Email = "admin@crm.com",
                             EmailConfirmed = true,
                             FirstName = "Admin",
@@ -143,9 +150,9 @@ namespace CRM.API.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@CRM.COM",
                             NormalizedUserName = "ADMIN@CRM.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAECiIiUdVW6yq/UBCk5lUyKFF/EI7TbBluSCVap+zDdsMWHTVVe4QWUOxwfhx4MoX5Q==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEANC3c1iWKZ8AbHoqP5/D9I73QhB/ZNYYS6VFxnTjr6j1sd2y61G6+oUQ177ycfsLg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "cdfa84db-ea47-4ffb-9ef3-2c943e3e8ae5",
+                            SecurityStamp = "4bf75372-f946-4bf9-9032-8cddb97d96e9",
                             TwoFactorEnabled = false,
                             UserName = "admin@crm.com"
                         });
@@ -155,44 +162,46 @@ namespace CRM.API.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Company")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<string>("Notes")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<string>("Phone")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -205,39 +214,39 @@ namespace CRM.API.Migrations
                         {
                             Id = 1,
                             Company = "TechCorp",
-                            CreatedAt = new DateTime(2026, 6, 26, 10, 54, 47, 296, DateTimeKind.Utc).AddTicks(66),
+                            CreatedAt = new DateTime(2026, 6, 26, 16, 7, 38, 695, DateTimeKind.Utc).AddTicks(391),
                             Email = "alice@techcorp.com",
                             FirstName = "Alice",
                             LastName = "Johnson",
                             Phone = "+1-555-0101",
                             Status = "Active",
-                            UpdatedAt = new DateTime(2026, 6, 26, 10, 54, 47, 296, DateTimeKind.Utc).AddTicks(67),
+                            UpdatedAt = new DateTime(2026, 6, 26, 16, 7, 38, 695, DateTimeKind.Utc).AddTicks(391),
                             UserId = "b74ddd14-6340-4840-95c2-db12554843e5"
                         },
                         new
                         {
                             Id = 2,
                             Company = "Acme Inc",
-                            CreatedAt = new DateTime(2026, 6, 26, 10, 54, 47, 296, DateTimeKind.Utc).AddTicks(69),
+                            CreatedAt = new DateTime(2026, 6, 26, 16, 7, 38, 695, DateTimeKind.Utc).AddTicks(394),
                             Email = "bob@acme.com",
                             FirstName = "Bob",
                             LastName = "Smith",
                             Phone = "+1-555-0102",
                             Status = "Lead",
-                            UpdatedAt = new DateTime(2026, 6, 26, 10, 54, 47, 296, DateTimeKind.Utc).AddTicks(70),
+                            UpdatedAt = new DateTime(2026, 6, 26, 16, 7, 38, 695, DateTimeKind.Utc).AddTicks(394),
                             UserId = "b74ddd14-6340-4840-95c2-db12554843e5"
                         },
                         new
                         {
                             Id = 3,
                             Company = "Global Ent",
-                            CreatedAt = new DateTime(2026, 6, 26, 10, 54, 47, 296, DateTimeKind.Utc).AddTicks(72),
+                            CreatedAt = new DateTime(2026, 6, 26, 16, 7, 38, 695, DateTimeKind.Utc).AddTicks(494),
                             Email = "carol@globalent.com",
                             FirstName = "Carol",
                             LastName = "White",
                             Phone = "+1-555-0103",
                             Status = "Prospect",
-                            UpdatedAt = new DateTime(2026, 6, 26, 10, 54, 47, 296, DateTimeKind.Utc).AddTicks(72),
+                            UpdatedAt = new DateTime(2026, 6, 26, 16, 7, 38, 695, DateTimeKind.Utc).AddTicks(495),
                             UserId = "b74ddd14-6340-4840-95c2-db12554843e5"
                         });
                 });
@@ -246,37 +255,39 @@ namespace CRM.API.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("CustomerId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
 
                     b.Property<DateTime?>("ExpectedCloseDate")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Notes")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<int>("Probability")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Stage")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<decimal>("Value")
                         .HasColumnType("decimal(18,2)");
@@ -293,39 +304,39 @@ namespace CRM.API.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2026, 6, 26, 10, 54, 47, 296, DateTimeKind.Utc).AddTicks(114),
+                            CreatedAt = new DateTime(2026, 6, 26, 16, 7, 38, 695, DateTimeKind.Utc).AddTicks(541),
                             CustomerId = 1,
-                            ExpectedCloseDate = new DateTime(2026, 7, 26, 10, 54, 47, 296, DateTimeKind.Utc).AddTicks(103),
+                            ExpectedCloseDate = new DateTime(2026, 7, 26, 16, 7, 38, 695, DateTimeKind.Utc).AddTicks(529),
                             Probability = 60,
                             Stage = "Proposal",
                             Title = "Enterprise License",
-                            UpdatedAt = new DateTime(2026, 6, 26, 10, 54, 47, 296, DateTimeKind.Utc).AddTicks(114),
+                            UpdatedAt = new DateTime(2026, 6, 26, 16, 7, 38, 695, DateTimeKind.Utc).AddTicks(541),
                             UserId = "b74ddd14-6340-4840-95c2-db12554843e5",
                             Value = 50000m
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2026, 6, 26, 10, 54, 47, 296, DateTimeKind.Utc).AddTicks(117),
+                            CreatedAt = new DateTime(2026, 6, 26, 16, 7, 38, 695, DateTimeKind.Utc).AddTicks(544),
                             CustomerId = 2,
-                            ExpectedCloseDate = new DateTime(2026, 8, 26, 10, 54, 47, 296, DateTimeKind.Utc).AddTicks(116),
+                            ExpectedCloseDate = new DateTime(2026, 8, 26, 16, 7, 38, 695, DateTimeKind.Utc).AddTicks(543),
                             Probability = 40,
                             Stage = "Qualification",
                             Title = "Starter Package",
-                            UpdatedAt = new DateTime(2026, 6, 26, 10, 54, 47, 296, DateTimeKind.Utc).AddTicks(117),
+                            UpdatedAt = new DateTime(2026, 6, 26, 16, 7, 38, 695, DateTimeKind.Utc).AddTicks(544),
                             UserId = "b74ddd14-6340-4840-95c2-db12554843e5",
                             Value = 5000m
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2026, 6, 26, 10, 54, 47, 296, DateTimeKind.Utc).AddTicks(123),
+                            CreatedAt = new DateTime(2026, 6, 26, 16, 7, 38, 695, DateTimeKind.Utc).AddTicks(551),
                             CustomerId = 3,
-                            ExpectedCloseDate = new DateTime(2026, 7, 11, 10, 54, 47, 296, DateTimeKind.Utc).AddTicks(119),
+                            ExpectedCloseDate = new DateTime(2026, 7, 11, 16, 7, 38, 695, DateTimeKind.Utc).AddTicks(547),
                             Probability = 80,
                             Stage = "Negotiation",
                             Title = "Premium Support",
-                            UpdatedAt = new DateTime(2026, 6, 26, 10, 54, 47, 296, DateTimeKind.Utc).AddTicks(123),
+                            UpdatedAt = new DateTime(2026, 6, 26, 16, 7, 38, 695, DateTimeKind.Utc).AddTicks(551),
                             UserId = "b74ddd14-6340-4840-95c2-db12554843e5",
                             Value = 12000m
                         });
@@ -335,35 +346,37 @@ namespace CRM.API.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ContentType")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<int?>("CustomerId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
 
                     b.Property<int?>("DealId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
 
                     b.Property<string>("FileName")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<string>("FilePath")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<long>("SizeBytes")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("UploadedAt")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -380,38 +393,40 @@ namespace CRM.API.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int?>("CustomerId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Description")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<DateTime?>("DueDate")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Priority")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -425,25 +440,25 @@ namespace CRM.API.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2026, 6, 26, 10, 54, 47, 296, DateTimeKind.Utc).AddTicks(151),
+                            CreatedAt = new DateTime(2026, 6, 26, 16, 7, 38, 695, DateTimeKind.Utc).AddTicks(583),
                             CustomerId = 1,
-                            DueDate = new DateTime(2026, 6, 28, 10, 54, 47, 296, DateTimeKind.Utc).AddTicks(150),
+                            DueDate = new DateTime(2026, 6, 28, 16, 7, 38, 695, DateTimeKind.Utc).AddTicks(583),
                             Priority = "High",
                             Status = "Pending",
                             Title = "Follow up on proposal",
-                            UpdatedAt = new DateTime(2026, 6, 26, 10, 54, 47, 296, DateTimeKind.Utc).AddTicks(151),
+                            UpdatedAt = new DateTime(2026, 6, 26, 16, 7, 38, 695, DateTimeKind.Utc).AddTicks(584),
                             UserId = "b74ddd14-6340-4840-95c2-db12554843e5"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2026, 6, 26, 10, 54, 47, 296, DateTimeKind.Utc).AddTicks(154),
+                            CreatedAt = new DateTime(2026, 6, 26, 16, 7, 38, 695, DateTimeKind.Utc).AddTicks(586),
                             CustomerId = 2,
-                            DueDate = new DateTime(2026, 7, 1, 10, 54, 47, 296, DateTimeKind.Utc).AddTicks(153),
+                            DueDate = new DateTime(2026, 7, 1, 16, 7, 38, 695, DateTimeKind.Utc).AddTicks(586),
                             Priority = "Medium",
                             Status = "In Progress",
                             Title = "Schedule demo call",
-                            UpdatedAt = new DateTime(2026, 6, 26, 10, 54, 47, 296, DateTimeKind.Utc).AddTicks(154),
+                            UpdatedAt = new DateTime(2026, 6, 26, 16, 7, 38, 695, DateTimeKind.Utc).AddTicks(587),
                             UserId = "b74ddd14-6340-4840-95c2-db12554843e5"
                         });
                 });
@@ -451,19 +466,19 @@ namespace CRM.API.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .HasMaxLength(256)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("NormalizedName")
                         .HasMaxLength(256)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("character varying(256)");
 
                     b.HasKey("Id");
 
@@ -478,17 +493,19 @@ namespace CRM.API.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<string>("RoleId")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -501,17 +518,19 @@ namespace CRM.API.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -523,17 +542,17 @@ namespace CRM.API.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -545,10 +564,10 @@ namespace CRM.API.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<string>("RoleId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -560,16 +579,16 @@ namespace CRM.API.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<string>("Value")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 

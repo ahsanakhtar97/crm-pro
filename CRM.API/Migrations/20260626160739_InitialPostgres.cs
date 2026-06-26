@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -8,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CRM.API.Migrations
 {
     /// <inheritdoc />
-    public partial class IdentityAndFeatures : Migration
+    public partial class InitialPostgres : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,10 +18,10 @@ namespace CRM.API.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    NormalizedName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -31,24 +32,24 @@ namespace CRM.API.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "TEXT", nullable: false),
-                    FirstName = table.Column<string>(type: "TEXT", nullable: false),
-                    LastName = table.Column<string>(type: "TEXT", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "INTEGER", nullable: false),
-                    PasswordHash = table.Column<string>(type: "TEXT", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "TEXT", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "TEXT", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "TEXT", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "INTEGER", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    FirstName = table.Column<string>(type: "text", nullable: false),
+                    LastName = table.Column<string>(type: "text", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "boolean", nullable: false),
+                    PasswordHash = table.Column<string>(type: "text", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "text", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "text", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "text", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "boolean", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "boolean", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "boolean", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -59,11 +60,11 @@ namespace CRM.API.Migrations
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    RoleId = table.Column<string>(type: "TEXT", nullable: false),
-                    ClaimType = table.Column<string>(type: "TEXT", nullable: true),
-                    ClaimValue = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    RoleId = table.Column<string>(type: "text", nullable: false),
+                    ClaimType = table.Column<string>(type: "text", nullable: true),
+                    ClaimValue = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -80,11 +81,11 @@ namespace CRM.API.Migrations
                 name: "AspNetUserClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    UserId = table.Column<string>(type: "TEXT", nullable: false),
-                    ClaimType = table.Column<string>(type: "TEXT", nullable: true),
-                    ClaimValue = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<string>(type: "text", nullable: false),
+                    ClaimType = table.Column<string>(type: "text", nullable: true),
+                    ClaimValue = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -101,10 +102,10 @@ namespace CRM.API.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "TEXT", nullable: false),
-                    ProviderKey = table.Column<string>(type: "TEXT", nullable: false),
-                    ProviderDisplayName = table.Column<string>(type: "TEXT", nullable: true),
-                    UserId = table.Column<string>(type: "TEXT", nullable: false)
+                    LoginProvider = table.Column<string>(type: "text", nullable: false),
+                    ProviderKey = table.Column<string>(type: "text", nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "text", nullable: true),
+                    UserId = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -121,8 +122,8 @@ namespace CRM.API.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "TEXT", nullable: false),
-                    RoleId = table.Column<string>(type: "TEXT", nullable: false)
+                    UserId = table.Column<string>(type: "text", nullable: false),
+                    RoleId = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -145,10 +146,10 @@ namespace CRM.API.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "TEXT", nullable: false),
-                    LoginProvider = table.Column<string>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    Value = table.Column<string>(type: "TEXT", nullable: true)
+                    UserId = table.Column<string>(type: "text", nullable: false),
+                    LoginProvider = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Value = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -165,18 +166,18 @@ namespace CRM.API.Migrations
                 name: "Customers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    FirstName = table.Column<string>(type: "TEXT", nullable: false),
-                    LastName = table.Column<string>(type: "TEXT", nullable: false),
-                    Email = table.Column<string>(type: "TEXT", nullable: false),
-                    Phone = table.Column<string>(type: "TEXT", nullable: false),
-                    Company = table.Column<string>(type: "TEXT", nullable: false),
-                    Status = table.Column<string>(type: "TEXT", nullable: false),
-                    Notes = table.Column<string>(type: "TEXT", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    UserId = table.Column<string>(type: "TEXT", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    FirstName = table.Column<string>(type: "text", nullable: false),
+                    LastName = table.Column<string>(type: "text", nullable: false),
+                    Email = table.Column<string>(type: "text", nullable: false),
+                    Phone = table.Column<string>(type: "text", nullable: false),
+                    Company = table.Column<string>(type: "text", nullable: false),
+                    Status = table.Column<string>(type: "text", nullable: false),
+                    Notes = table.Column<string>(type: "text", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UserId = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -193,18 +194,18 @@ namespace CRM.API.Migrations
                 name: "Deals",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Title = table.Column<string>(type: "TEXT", nullable: false),
-                    Value = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Stage = table.Column<string>(type: "TEXT", nullable: false),
-                    Probability = table.Column<int>(type: "INTEGER", nullable: false),
-                    ExpectedCloseDate = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    Notes = table.Column<string>(type: "TEXT", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    CustomerId = table.Column<int>(type: "INTEGER", nullable: false),
-                    UserId = table.Column<string>(type: "TEXT", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Title = table.Column<string>(type: "text", nullable: false),
+                    Value = table.Column<decimal>(type: "numeric(18,2)", nullable: false),
+                    Stage = table.Column<string>(type: "text", nullable: false),
+                    Probability = table.Column<int>(type: "integer", nullable: false),
+                    ExpectedCloseDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Notes = table.Column<string>(type: "text", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CustomerId = table.Column<int>(type: "integer", nullable: false),
+                    UserId = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -227,17 +228,17 @@ namespace CRM.API.Migrations
                 name: "Tasks",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Title = table.Column<string>(type: "TEXT", nullable: false),
-                    Description = table.Column<string>(type: "TEXT", nullable: true),
-                    Priority = table.Column<string>(type: "TEXT", nullable: false),
-                    Status = table.Column<string>(type: "TEXT", nullable: false),
-                    DueDate = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    CustomerId = table.Column<int>(type: "INTEGER", nullable: true),
-                    UserId = table.Column<string>(type: "TEXT", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Title = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    Priority = table.Column<string>(type: "text", nullable: false),
+                    Status = table.Column<string>(type: "text", nullable: false),
+                    DueDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CustomerId = table.Column<int>(type: "integer", nullable: true),
+                    UserId = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -260,16 +261,16 @@ namespace CRM.API.Migrations
                 name: "Attachments",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    FileName = table.Column<string>(type: "TEXT", nullable: false),
-                    FilePath = table.Column<string>(type: "TEXT", nullable: false),
-                    SizeBytes = table.Column<long>(type: "INTEGER", nullable: false),
-                    ContentType = table.Column<string>(type: "TEXT", nullable: false),
-                    UploadedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    UserId = table.Column<string>(type: "TEXT", nullable: false),
-                    CustomerId = table.Column<int>(type: "INTEGER", nullable: true),
-                    DealId = table.Column<int>(type: "INTEGER", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    FileName = table.Column<string>(type: "text", nullable: false),
+                    FilePath = table.Column<string>(type: "text", nullable: false),
+                    SizeBytes = table.Column<long>(type: "bigint", nullable: false),
+                    ContentType = table.Column<string>(type: "text", nullable: false),
+                    UploadedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UserId = table.Column<string>(type: "text", nullable: false),
+                    CustomerId = table.Column<int>(type: "integer", nullable: true),
+                    DealId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -296,14 +297,14 @@ namespace CRM.API.Migrations
                 name: "Notes",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Type = table.Column<string>(type: "TEXT", nullable: false),
-                    Content = table.Column<string>(type: "TEXT", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    UserId = table.Column<string>(type: "TEXT", nullable: false),
-                    CustomerId = table.Column<int>(type: "INTEGER", nullable: true),
-                    DealId = table.Column<int>(type: "INTEGER", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Type = table.Column<string>(type: "text", nullable: false),
+                    Content = table.Column<string>(type: "text", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UserId = table.Column<string>(type: "text", nullable: false),
+                    CustomerId = table.Column<int>(type: "integer", nullable: true),
+                    DealId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -329,16 +330,16 @@ namespace CRM.API.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "CreatedAt", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "b74ddd14-6340-4840-95c2-db12554843e5", 0, "97e7b72a-651d-49fe-a7e6-0cccd75f817e", new DateTime(2026, 6, 26, 10, 54, 47, 245, DateTimeKind.Utc).AddTicks(6666), "admin@crm.com", true, "Admin", "User", false, null, "ADMIN@CRM.COM", "ADMIN@CRM.COM", "AQAAAAIAAYagAAAAECiIiUdVW6yq/UBCk5lUyKFF/EI7TbBluSCVap+zDdsMWHTVVe4QWUOxwfhx4MoX5Q==", null, false, "cdfa84db-ea47-4ffb-9ef3-2c943e3e8ae5", false, "admin@crm.com" });
+                values: new object[] { "b74ddd14-6340-4840-95c2-db12554843e5", 0, "47d23563-2f95-48ef-94f4-e74e2056f079", new DateTime(2026, 6, 26, 16, 7, 38, 653, DateTimeKind.Utc).AddTicks(7211), "admin@crm.com", true, "Admin", "User", false, null, "ADMIN@CRM.COM", "ADMIN@CRM.COM", "AQAAAAIAAYagAAAAEANC3c1iWKZ8AbHoqP5/D9I73QhB/ZNYYS6VFxnTjr6j1sd2y61G6+oUQ177ycfsLg==", null, false, "4bf75372-f946-4bf9-9032-8cddb97d96e9", false, "admin@crm.com" });
 
             migrationBuilder.InsertData(
                 table: "Customers",
                 columns: new[] { "Id", "Company", "CreatedAt", "Email", "FirstName", "LastName", "Notes", "Phone", "Status", "UpdatedAt", "UserId" },
                 values: new object[,]
                 {
-                    { 1, "TechCorp", new DateTime(2026, 6, 26, 10, 54, 47, 296, DateTimeKind.Utc).AddTicks(66), "alice@techcorp.com", "Alice", "Johnson", null, "+1-555-0101", "Active", new DateTime(2026, 6, 26, 10, 54, 47, 296, DateTimeKind.Utc).AddTicks(67), "b74ddd14-6340-4840-95c2-db12554843e5" },
-                    { 2, "Acme Inc", new DateTime(2026, 6, 26, 10, 54, 47, 296, DateTimeKind.Utc).AddTicks(69), "bob@acme.com", "Bob", "Smith", null, "+1-555-0102", "Lead", new DateTime(2026, 6, 26, 10, 54, 47, 296, DateTimeKind.Utc).AddTicks(70), "b74ddd14-6340-4840-95c2-db12554843e5" },
-                    { 3, "Global Ent", new DateTime(2026, 6, 26, 10, 54, 47, 296, DateTimeKind.Utc).AddTicks(72), "carol@globalent.com", "Carol", "White", null, "+1-555-0103", "Prospect", new DateTime(2026, 6, 26, 10, 54, 47, 296, DateTimeKind.Utc).AddTicks(72), "b74ddd14-6340-4840-95c2-db12554843e5" }
+                    { 1, "TechCorp", new DateTime(2026, 6, 26, 16, 7, 38, 695, DateTimeKind.Utc).AddTicks(391), "alice@techcorp.com", "Alice", "Johnson", null, "+1-555-0101", "Active", new DateTime(2026, 6, 26, 16, 7, 38, 695, DateTimeKind.Utc).AddTicks(391), "b74ddd14-6340-4840-95c2-db12554843e5" },
+                    { 2, "Acme Inc", new DateTime(2026, 6, 26, 16, 7, 38, 695, DateTimeKind.Utc).AddTicks(394), "bob@acme.com", "Bob", "Smith", null, "+1-555-0102", "Lead", new DateTime(2026, 6, 26, 16, 7, 38, 695, DateTimeKind.Utc).AddTicks(394), "b74ddd14-6340-4840-95c2-db12554843e5" },
+                    { 3, "Global Ent", new DateTime(2026, 6, 26, 16, 7, 38, 695, DateTimeKind.Utc).AddTicks(494), "carol@globalent.com", "Carol", "White", null, "+1-555-0103", "Prospect", new DateTime(2026, 6, 26, 16, 7, 38, 695, DateTimeKind.Utc).AddTicks(495), "b74ddd14-6340-4840-95c2-db12554843e5" }
                 });
 
             migrationBuilder.InsertData(
@@ -346,9 +347,9 @@ namespace CRM.API.Migrations
                 columns: new[] { "Id", "CreatedAt", "CustomerId", "ExpectedCloseDate", "Notes", "Probability", "Stage", "Title", "UpdatedAt", "UserId", "Value" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2026, 6, 26, 10, 54, 47, 296, DateTimeKind.Utc).AddTicks(114), 1, new DateTime(2026, 7, 26, 10, 54, 47, 296, DateTimeKind.Utc).AddTicks(103), null, 60, "Proposal", "Enterprise License", new DateTime(2026, 6, 26, 10, 54, 47, 296, DateTimeKind.Utc).AddTicks(114), "b74ddd14-6340-4840-95c2-db12554843e5", 50000m },
-                    { 2, new DateTime(2026, 6, 26, 10, 54, 47, 296, DateTimeKind.Utc).AddTicks(117), 2, new DateTime(2026, 8, 26, 10, 54, 47, 296, DateTimeKind.Utc).AddTicks(116), null, 40, "Qualification", "Starter Package", new DateTime(2026, 6, 26, 10, 54, 47, 296, DateTimeKind.Utc).AddTicks(117), "b74ddd14-6340-4840-95c2-db12554843e5", 5000m },
-                    { 3, new DateTime(2026, 6, 26, 10, 54, 47, 296, DateTimeKind.Utc).AddTicks(123), 3, new DateTime(2026, 7, 11, 10, 54, 47, 296, DateTimeKind.Utc).AddTicks(119), null, 80, "Negotiation", "Premium Support", new DateTime(2026, 6, 26, 10, 54, 47, 296, DateTimeKind.Utc).AddTicks(123), "b74ddd14-6340-4840-95c2-db12554843e5", 12000m }
+                    { 1, new DateTime(2026, 6, 26, 16, 7, 38, 695, DateTimeKind.Utc).AddTicks(541), 1, new DateTime(2026, 7, 26, 16, 7, 38, 695, DateTimeKind.Utc).AddTicks(529), null, 60, "Proposal", "Enterprise License", new DateTime(2026, 6, 26, 16, 7, 38, 695, DateTimeKind.Utc).AddTicks(541), "b74ddd14-6340-4840-95c2-db12554843e5", 50000m },
+                    { 2, new DateTime(2026, 6, 26, 16, 7, 38, 695, DateTimeKind.Utc).AddTicks(544), 2, new DateTime(2026, 8, 26, 16, 7, 38, 695, DateTimeKind.Utc).AddTicks(543), null, 40, "Qualification", "Starter Package", new DateTime(2026, 6, 26, 16, 7, 38, 695, DateTimeKind.Utc).AddTicks(544), "b74ddd14-6340-4840-95c2-db12554843e5", 5000m },
+                    { 3, new DateTime(2026, 6, 26, 16, 7, 38, 695, DateTimeKind.Utc).AddTicks(551), 3, new DateTime(2026, 7, 11, 16, 7, 38, 695, DateTimeKind.Utc).AddTicks(547), null, 80, "Negotiation", "Premium Support", new DateTime(2026, 6, 26, 16, 7, 38, 695, DateTimeKind.Utc).AddTicks(551), "b74ddd14-6340-4840-95c2-db12554843e5", 12000m }
                 });
 
             migrationBuilder.InsertData(
@@ -356,8 +357,8 @@ namespace CRM.API.Migrations
                 columns: new[] { "Id", "CreatedAt", "CustomerId", "Description", "DueDate", "Priority", "Status", "Title", "UpdatedAt", "UserId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2026, 6, 26, 10, 54, 47, 296, DateTimeKind.Utc).AddTicks(151), 1, null, new DateTime(2026, 6, 28, 10, 54, 47, 296, DateTimeKind.Utc).AddTicks(150), "High", "Pending", "Follow up on proposal", new DateTime(2026, 6, 26, 10, 54, 47, 296, DateTimeKind.Utc).AddTicks(151), "b74ddd14-6340-4840-95c2-db12554843e5" },
-                    { 2, new DateTime(2026, 6, 26, 10, 54, 47, 296, DateTimeKind.Utc).AddTicks(154), 2, null, new DateTime(2026, 7, 1, 10, 54, 47, 296, DateTimeKind.Utc).AddTicks(153), "Medium", "In Progress", "Schedule demo call", new DateTime(2026, 6, 26, 10, 54, 47, 296, DateTimeKind.Utc).AddTicks(154), "b74ddd14-6340-4840-95c2-db12554843e5" }
+                    { 1, new DateTime(2026, 6, 26, 16, 7, 38, 695, DateTimeKind.Utc).AddTicks(583), 1, null, new DateTime(2026, 6, 28, 16, 7, 38, 695, DateTimeKind.Utc).AddTicks(583), "High", "Pending", "Follow up on proposal", new DateTime(2026, 6, 26, 16, 7, 38, 695, DateTimeKind.Utc).AddTicks(584), "b74ddd14-6340-4840-95c2-db12554843e5" },
+                    { 2, new DateTime(2026, 6, 26, 16, 7, 38, 695, DateTimeKind.Utc).AddTicks(586), 2, null, new DateTime(2026, 7, 1, 16, 7, 38, 695, DateTimeKind.Utc).AddTicks(586), "Medium", "In Progress", "Schedule demo call", new DateTime(2026, 6, 26, 16, 7, 38, 695, DateTimeKind.Utc).AddTicks(587), "b74ddd14-6340-4840-95c2-db12554843e5" }
                 });
 
             migrationBuilder.CreateIndex(
